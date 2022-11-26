@@ -8,7 +8,7 @@ import (
 	"gorm.io/gorm"
 )
 
-var Database *gorm.DB
+var DB *gorm.DB
 
 func Connect() {
 	var err error
@@ -19,7 +19,7 @@ func Connect() {
 	port := os.Getenv("DB_PORT")
 
 	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable TimeZone=Africa/Lagos", host, username, password, databaseName, port)
-	Database, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 
 	if err != nil {
 		panic(err)

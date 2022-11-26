@@ -19,7 +19,7 @@ type User struct {
 }
 
 func (user *User) Save() (*User, error) {
-	if result := database.Database.Create(&user); result.Error != nil {
+	if result := database.DB.Create(&user); result.Error != nil {
 		return &User{}, result.Error
 	}
 	return user, nil
@@ -33,4 +33,17 @@ func (user *User) BeforeSave(*gorm.DB) error {
 	user.Password = string(passwordHash)
 	user.Username = html.EscapeString(strings.TrimSpace(user.Username))
 	return nil
+}
+
+func (user *User) ValidatePassword(password string) error {
+	return bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
+}
+
+func FindUserByUsername(username string) (User, error) {
+	var user User
+
+	if result := database.DB.Where("username=?", username).Find(&user); result.Error != nil {
+		return User{}, result.Error
+	}
+	return user, nil
 }
