@@ -50,7 +50,7 @@ func FindUserByUsername(username string) (User, error) {
 
 func FindUserById(id uint) (User, error) {
 	var user User
-	if err := database.DB.Preload("Entries").Where("ID=?", id).Find(&user).Error; err != nil {
+	if err := database.DB.Preload("Blogs").Where("ID=?", id).Find(&user).Error; err != nil {
 		return User{}, err
 	}
 	return user, nil
