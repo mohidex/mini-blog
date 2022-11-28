@@ -61,3 +61,22 @@ func GetBlogById(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, gin.H{"data": blog})
 }
+
+func DeleteBlog(ctx *gin.Context) {
+	id := ctx.Param("id")
+	blog, err := model.FindBlogById(id)
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			ctx.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		} else {
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		}
+		return
+	}
+	if err := blog.Delete(); err != nil {
+		ctx.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		return
+	}
+
+	ctx.JSON(http.StatusNoContent, gin.H{"status": "ok"})
+}

@@ -1,6 +1,8 @@
 package model
 
 import (
+	"fmt"
+
 	"github.com/mohidex/mini-blog/database"
 	"gorm.io/gorm"
 )
@@ -25,4 +27,13 @@ func FindBlogById(id string) (Blog, error) {
 		return Blog{}, err
 	}
 	return blog, nil
+}
+
+func (blog *Blog) Delete() error {
+	if result := database.DB.Delete(&blog); result.Error != nil {
+		return result.Error
+	} else if result.RowsAffected < 1 {
+		return fmt.Errorf("row with id=%d cannot be deleted because it doesn't exist", blog.ID)
+	}
+	return nil
 }

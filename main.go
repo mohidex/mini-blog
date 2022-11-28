@@ -42,6 +42,7 @@ func serveApplication() {
 	protectedRoutes.POST("/blogs", controller.AddBlog)
 	protectedRoutes.GET("/blogs", controller.GetAllBlog)
 	protectedRoutes.GET("/blog/:id", controller.GetBlogById)
+	protectedRoutes.DELETE("/blog/:id", controller.DeleteBlog)
 
 	router.Run(":8000")
 	fmt.Println("Server running on port 8000")
