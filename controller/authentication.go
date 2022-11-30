@@ -15,6 +15,7 @@ func Register(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
 		})
+		return
 	}
 
 	user := model.User{
@@ -28,6 +29,7 @@ func Register(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
 		})
+		return
 	}
 	ctx.JSON(http.StatusCreated, gin.H{
 		"user": savedUser,
@@ -50,6 +52,7 @@ func Login(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"error": err,
 		})
+		return
 	}
 
 	if err := user.ValidatePassword(input.Password); err != nil {
@@ -62,6 +65,7 @@ func Login(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"error": err,
 		})
+		return
 	}
 
 	ctx.JSON(http.StatusOK, gin.H{"jwt": jwt})
